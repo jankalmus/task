@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Application.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20231129103017_InitialMigration")]
-    partial class InitialMigration
+    [Migration("20231129154755_UpdateSession")]
+    partial class UpdateSession
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -36,7 +36,7 @@ namespace Application.Migrations
                     b.Property<int>("Code")
                         .HasColumnType("integer");
 
-                    b.Property<int>("ParentSectorId")
+                    b.Property<int?>("ParentSectorId")
                         .HasColumnType("integer");
 
                     b.Property<string>("Title")
@@ -56,10 +56,16 @@ namespace Application.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer");
 
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
                     b.Property<bool>("Consent")
                         .HasColumnType("boolean");
 
                     b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("SessionId")
                         .IsRequired()
                         .HasColumnType("text");
 
@@ -87,9 +93,7 @@ namespace Application.Migrations
                 {
                     b.HasOne("Application.Models.Domain.Sector", "ParentSector")
                         .WithMany("SubSectors")
-                        .HasForeignKey("ParentSectorId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("ParentSectorId");
 
                     b.Navigation("ParentSector");
                 });

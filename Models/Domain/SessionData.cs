@@ -3,12 +3,15 @@ using Application.DataAccess.Base;
 
 namespace Application.Models.Domain;
 
-public class SessionData : EntityBase<Guid>
+public class SessionData : EntityBase<int>
 {
+    [Required] 
+    public string SessionId { get; set; } = default!;
+    
     [Required]
     public string Name { get; set; } = default!; 
     
-    public List<Sector> Sectors { get; set; } = new List<Sector>(); 
+    public List<Sector> Sectors { get; set; } = new(); 
     
     public bool Consent { get; set; }
 }

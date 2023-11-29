@@ -49,14 +49,20 @@ namespace Application.Migrations
 
             modelBuilder.Entity("Application.Models.Domain.SessionData", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<bool>("Consent")
                         .HasColumnType("boolean");
 
                     b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("SessionId")
                         .IsRequired()
                         .HasColumnType("text");
 
@@ -70,8 +76,8 @@ namespace Application.Migrations
                     b.Property<int>("SectorsId")
                         .HasColumnType("integer");
 
-                    b.Property<Guid>("SessionDataId")
-                        .HasColumnType("uuid");
+                    b.Property<int>("SessionDataId")
+                        .HasColumnType("integer");
 
                     b.HasKey("SectorsId", "SessionDataId");
 

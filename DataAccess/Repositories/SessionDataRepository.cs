@@ -12,8 +12,8 @@ public class SessionDataRepository : BaseRepository<SessionData>, ISessionDataRe
     {
     }
 
-    public async Task<SessionData?> GetBySessionIdAsync(Guid sessionId)
+    public async Task<SessionData?> GetBySessionIdAsync(string sessionId)
     {
-        return await Set.FirstOrDefaultAsync(item => item.Id == sessionId);
+        return await Set.FirstOrDefaultAsync(item => item.SessionId == sessionId);
     }
 }

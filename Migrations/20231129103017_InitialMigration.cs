@@ -37,7 +37,7 @@ namespace Application.Migrations
                 name: "Sessions",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    Id = table.Column<int>(type: "integer", nullable: false),
                     Name = table.Column<string>(type: "text", nullable: false),
                     Consent = table.Column<bool>(type: "boolean", nullable: false)
                 },
@@ -51,7 +51,7 @@ namespace Application.Migrations
                 columns: table => new
                 {
                     SectorsId = table.Column<int>(type: "integer", nullable: false),
-                    SessionDataId = table.Column<Guid>(type: "uuid", nullable: false)
+                    SessionDataId = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
                 {
