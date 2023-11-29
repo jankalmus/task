@@ -1,10 +1,49 @@
 ﻿@page
+@using Application.Models.Domain
 @model IndexModel
 @{
-    ViewData["Title"] = "Home page";
+    
+    async Task ShowSectors(IEnumerable<Sector> sectors, int depth = 1)
+    {
+        @foreach (var sector in sectors)
+        { 
+            <option value="@sector.Code" style="padding-left: @($"{depth * 10}px")">@sector.Title</option>
+            await ShowSectors(sector.SubSectors, depth + 1);
+        }
+    }
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div style="width: 550px">
+    <form method="post">
+        <div class="form-label">
+            <p>Please enter your name and pick the Sectors you are currently involved in.</p>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="@Model.Name" class="control-label"></label>
+            <input asp-for="@Model.Name" class="form-control"/>
+            <span asp-validation-for="@Model.Name" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="@Model.SelectedSectors" class="control-label">Sectors:</label>
+            <div>
+                <select asp-for="@Model.SelectedSectors" multiple size="5">
+                    @{ await ShowSectors(@Model.Sectors); }
+                </select>
+            </div>
+            <span asp-validation-for="@Model.SelectedSectors" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="@Model.Consent" class="control-label">Agree to terms:</label>
+            <div>
+                <input type="checkbox" asp-for="@Model.Consent"/>
+            </div>
+            <span asp-validation-for="@Model.Consent" class="text-danger"></span>
+        </div>
+
+        <button type="submit" value="Save">Save</button>
+    </form>
 </div>
+
