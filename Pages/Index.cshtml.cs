@@ -8,8 +8,8 @@ namespace Application.Pages;
 
 public class IndexModel : PageModel
 {
-    private readonly ILogger<IndexModel> _logger;
     private readonly ISectorRepository _sectorRepository;
+    private readonly ISessionDataRepository _sessionDataRepository;
 
     [BindProperty]
     [Required(ErrorMessage = "You must specify your name.")]
@@ -24,15 +24,15 @@ public class IndexModel : PageModel
     
     public IEnumerable<Sector> Sectors { get; set; } = new List<Sector>();
 
-    public IndexModel(ILogger<IndexModel> logger, ISectorRepository sectorRepository)
+    public IndexModel(ISectorRepository sectorRepository, ISessionDataRepository sessionDataRepository)
     {
-        _logger = logger;
         _sectorRepository = sectorRepository;
+        _sessionDataRepository = sessionDataRepository;
     }
 
     public async Task OnGet()
     {
-       Sectors = await _sectorRepository.GetAllSectorsAsync();
+       Sectors = await _sectorRepository.GetAllNestedAsync();
     }
     
     public async Task<IActionResult> OnPostAsync()
@@ -42,12 +42,26 @@ public class IndexModel : PageModel
             ModelState.AddModelError(nameof(SelectedSectors), "You must select at least one sector.");
         }
         
+        Sectors = await _sectorRepository.GetAllNestedAsync();
+        
         if (!ModelState.IsValid)
         {
-            Sectors = await _sectorRepository.GetAllSectorsAsync();
+            Sectors = await _sectorRepository.GetAllNestedAsync();
             return Page();
         }
 
-        return RedirectToPage("./Index");
+        var allSectors = await _sectorRepository.GetAllAsync();
+
+        var sessionData = new SessionData()
+        {
+            SessionId = HttpContext.Session.Id,
+            Name = Name,
+            Consent = Consent,
+            Sectors = allSectors.Where(item => SelectedSectors.Contains(item.Code.ToString())).ToList()
+        };
+
+        await _sessionDataRepository.AddOrUpdateAsync(sessionData);
+
+        return Page();
     }
 }
