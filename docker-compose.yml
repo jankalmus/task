@@ -1,5 +1,13 @@
 version: '3.8'
 services:
+  web:
+    depends_on:
+      - db
+    ports:
+      - '443:80'
+    build:
+      context: .
+      dockerfile: Dockerfile
   db:
     image: postgres:14.1-alpine
     restart: always
