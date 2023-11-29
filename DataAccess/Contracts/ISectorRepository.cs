@@ -4,5 +4,6 @@ namespace Application.DataAccess.Contracts;
 
 public interface ISectorRepository : IBaseRepository<Sector>
 {
-    Task<IList<Sector>> GetAllSectorsAsync();
+    Task<IList<Sector>> GetAllAsync();
+    Task<IList<Sector>> GetAllNestedAsync();
 }

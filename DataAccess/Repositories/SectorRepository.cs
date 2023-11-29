@@ -12,7 +12,12 @@ public class SectorRepository : BaseRepository<Sector>, ISectorRepository
     {
     }
 
-    public async Task<IList<Sector>> GetAllSectorsAsync()
+    public async Task<IList<Sector>> GetAllAsync()
+    {
+        return await Set.ToListAsync();
+    }
+
+    public async Task<IList<Sector>> GetAllNestedAsync()
     {
         var sectors = await Set.ToListAsync(); 
         
