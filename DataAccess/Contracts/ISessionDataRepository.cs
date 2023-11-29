@@ -2,7 +2,7 @@ using Application.Models.Domain;
 
 namespace Application.DataAccess.Contracts;
 
-public interface ISessionDataRepository
+public interface ISessionDataRepository : IBaseRepository<SessionData>
 {
-    Task<SessionData> GetDataByIdAsync(Guid sessionId);
+    Task<SessionData?> GetBySessionIdAsync(Guid sessionId);
 }

@@ -12,7 +12,7 @@ public class SessionDataRepository : BaseRepository<SessionData>, ISessionDataRe
     {
     }
 
-    public async Task<SessionData?> GetDataByIdAsync(Guid sessionId)
+    public async Task<SessionData?> GetBySessionIdAsync(Guid sessionId)
     {
         return await Set.FirstOrDefaultAsync(item => item.Id == sessionId);
     }

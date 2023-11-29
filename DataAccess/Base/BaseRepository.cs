@@ -13,4 +13,11 @@ public abstract class BaseRepository<T> where T : BaseEntity
     {
         DbContext = dbContext;
     }
+
+    public async Task AddOrUpdateAsync(T subject)
+    {
+        DbContext.Update(subject);
+
+        await DbContext.SaveChangesAsync();
+    }
 }
