@@ -1,4 +1,5 @@
 using Application.DataAccess.Context;
+using Application.DataAccess.Seeding;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -29,5 +30,7 @@ app.UseRouting();
 app.UseAuthorization();
 
 app.MapRazorPages();
+
+app.SeedDatabase();
 
 app.Run();
