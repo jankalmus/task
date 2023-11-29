@@ -103,7 +103,7 @@ public static class Seeder
 	    
 	    sectors.Add(new Sector("Aluminum and steel workboats", 271, maritime));
 	    sectors.Add(new Sector("Boat/Yacht building", 269, maritime));
-	    sectors.Add(new Sector("SHip repair and conversion", 230, maritime));
+	    sectors.Add(new Sector("Ship repair and conversion", 230, maritime));
 	    
 	    sectors.Add(new Sector("Metal structures", 93, machinery));
 	    sectors.Add(new Sector("Other", 508, machinery));

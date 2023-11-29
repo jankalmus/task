@@ -32,16 +32,19 @@ public class IndexModel : PageModel
 
     public async Task OnGet()
     {
-       Sectors = await _sectorRepository.GetAllNestedAsync();
+        // Dummy value to make ASP.NET keep track of the session -> Cookies not sent if session is not used
+        HttpContext.Session.SetString("SessionId", HttpContext.Session.Id);
+        
+        Sectors = await _sectorRepository.GetAllNestedAsync();
 
-       var sessionData = await _sessionDataRepository.GetBySessionIdAsync(HttpContext.Session.Id);
+        var sessionData = await _sessionDataRepository.GetBySessionIdAsync(HttpContext.Session.Id);
 
-       if (sessionData != null)
-       {
-           Name = sessionData.Name;
-           Consent = sessionData.Consent;
-           SelectedSectors = sessionData.Sectors.Select(item => item.Code.ToString()).ToList();
-       }
+        if (sessionData != null)
+        {
+            Name = sessionData.Name;
+            Consent = sessionData.Consent;
+            SelectedSectors = sessionData.Sectors.Select(item => item.Code.ToString()).ToList();
+        }
     }
     
     public async Task<IActionResult> OnPostAsync()
@@ -61,14 +64,14 @@ public class IndexModel : PageModel
 
         var allSectors = await _sectorRepository.GetAllAsync();
 
-        var sessionData = new SessionData()
-        {
-            SessionId = HttpContext.Session.Id,
-            Name = Name,
-            Consent = Consent,
-            Sectors = allSectors.Where(item => SelectedSectors.Contains(item.Code.ToString())).ToList()
-        };
+        SessionData sessionData = await _sessionDataRepository.GetBySessionIdAsync(HttpContext.Session.Id) 
+                                  ?? new SessionData();
 
+        sessionData.SessionId = HttpContext.Session.Id;
+        sessionData.Name = Name;
+        sessionData.Consent = Consent;
+        sessionData.Sectors = allSectors.Where(item => SelectedSectors.Contains(item.Code.ToString())).ToList();
+        
         await _sessionDataRepository.AddOrUpdateAsync(sessionData);
 
         return RedirectToPage(nameof(Index));
