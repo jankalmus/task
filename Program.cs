@@ -1,4 +1,6 @@
 using Application.DataAccess.Context;
+using Application.DataAccess.Contracts;
+using Application.DataAccess.Repositories;
 using Application.DataAccess.Seeding;
 using Microsoft.EntityFrameworkCore;
 
@@ -10,7 +12,10 @@ builder.Services.AddRazorPages();
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
 {
     options.UseNpgsql(builder.Configuration.GetConnectionString("ApplicationConnectionString"));
-}); 
+});
+
+builder.Services.AddScoped<ISessionDataRepository, SessionDataRepository>();
+builder.Services.AddScoped<ISectorRepository, SectorRepository>();
 
 var app = builder.Build();
 
