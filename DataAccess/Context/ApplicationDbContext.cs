@@ -7,7 +7,7 @@ public class ApplicationDbContext : DbContext
 {
     public DbSet<Sector> Sectors { get; set; }
 
-    public DbSet<UserData> Sessions { get; set; }
+    public DbSet<SessionData> Sessions { get; set; }
     
     public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
     {
@@ -16,7 +16,7 @@ public class ApplicationDbContext : DbContext
     
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.Entity<UserData>()
+        modelBuilder.Entity<SessionData>()
             .HasMany(e => e.Sectors)
             .WithMany();
     }

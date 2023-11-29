@@ -3,7 +3,7 @@ using Application.DataAccess.Base;
 
 namespace Application.Models.Domain;
 
-public class UserData : EntityBase<Guid>
+public class SessionData : EntityBase<Guid>
 {
     [Required]
     public string Name { get; set; } = default!; 
