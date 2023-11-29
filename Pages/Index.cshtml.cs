@@ -33,6 +33,15 @@ public class IndexModel : PageModel
     public async Task OnGet()
     {
        Sectors = await _sectorRepository.GetAllNestedAsync();
+
+       var sessionData = await _sessionDataRepository.GetBySessionIdAsync(HttpContext.Session.Id);
+
+       if (sessionData != null)
+       {
+           Name = sessionData.Name;
+           Consent = sessionData.Consent;
+           SelectedSectors = sessionData.Sectors.Select(item => item.Code.ToString()).ToList();
+       }
     }
     
     public async Task<IActionResult> OnPostAsync()
@@ -62,6 +71,6 @@ public class IndexModel : PageModel
 
         await _sessionDataRepository.AddOrUpdateAsync(sessionData);
 
-        return Page();
+        return RedirectToPage(nameof(Index));
     }
 }
